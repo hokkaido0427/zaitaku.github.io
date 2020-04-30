@@ -1,0 +1,191 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<title>在宅勤務</title>
+<link rel="stylesheet" href="zaitaku.css">
+<link rel="shortcut icon" href="favicon.ico">
+<link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta http-equiv="Content-Security-Policy" content="default-src * data:; style-src * 'unsafe-inline'; script-src * 'unsafe-inline' 'unsafe-eval'">
+<!-- <script src="components/loader.js"></script>
+<link rel="stylesheet" href="components/loader.css">
+<link rel="stylesheet" href="css/style.css"> -->
+
+</head>
+<body>
+    <div class="grid-container">
+
+    <!-- 水分補給 -->
+    <div class="Hydration">
+        <span class="container">
+            <label id="label0"><div class="mainchar">水分</div></label>
+            <p span class="nomal">Hydration</span>
+        <!-- タイマー -->
+        <div class="timeryade">
+            <form name="timer_H">
+                <input type="text" placeholder="分" value="30" class="numeric" id="minBox0" size="2">
+                <input type="text" placeholder="秒" value=""   class="numeric" id="secBox0" size="2">
+            </form>
+        </div>
+        
+    </div>
+
+    <!-- 換気 -->
+    <div class="ventilate">
+        <span class="container">
+            <label id="label1"><div class="mainchar">換気</div></label>
+            <p span class="nomal">ventilate</span>
+        <!-- タイマー -->
+        <div class="timeryade">
+            <form name="timer_V">
+                <input type="text" placeholder="分" value="120" class="numeric" id="minBox1" size="2">
+                <input type="text" placeholder="秒" value=""    class="numeric" id="secBox1" size="2">
+            </form>
+        </div>
+    </div>
+
+    <!-- 休憩 -->
+    <div class="break">
+        <span class="container">
+            <label id="label2"><div class="mainchar">休憩</div></label>
+            <p span class="nomal">break</span>
+        <!-- タイマー -->
+        <div class="timeryade">
+            <form name="timer_B">
+                <input type="text" placeholder="分" value="60" class="numeric" id="minBox2" size="2">
+                <input type="text" placeholder="秒" value=""   class="numeric" id="secBox2" size="2">
+            </form>
+        </div>
+    </div>
+
+    <!-- 立ち上がる -->
+    <div class="stand">
+        <span class="container">
+            <label id="label3"><div class="mainchar">立つ</div></label>
+            <p span class="nomal">stand</span>
+        <!-- タイマー -->
+        <div class="timeryade">
+            <form name="timer_B">
+                <input type="text" placeholder="分" value="30" class="numeric" id="minBox3" size="2">
+                <input type="text" placeholder="秒" value=""   class="numeric" id="secBox3" size="2">
+            </form>
+        </div>
+    </div>
+
+    <!-- ボタン -->
+    <div  class="buttonyade">
+        <a href="javascript:startTimers();" id="starter" class="btn-circle-3d"><i class="fas fa-play"></i></a>
+        <a href="javascript:stopTimers();"  id="stopper" class="btn-circle-3d"><i class="fas fa-pause"></i></a>
+    
+        <!-- <input type="submit" value="スタート" id="starter" onclick="startTimers()">
+        <input type="button" value="ストップ" id="stopper" onclick="stopTimers()"> -->
+    </div>
+
+  </div>
+<script>
+var starter = document.querySelector('#starter');
+var stopper = document.querySelector('#stopper');
+
+
+//タイマーインスタンスを格納する配列
+var timerArray = [
+    new Timer('label0', 'minBox0', 'secBox0'),
+    new Timer('label1', 'minBox1', 'secBox1'),
+    new Timer('label2', 'minBox2', 'secBox2'),
+    new Timer('label3', 'minBox3', 'secBox3'),
+];
+
+//タイマーのコンストラクタ
+function Timer(label, minBox, secBox) {
+    this.intervalID = null; // nullのとき停止中
+    this.label  = document.querySelector('#' + label);
+    this.minBox = document.querySelector('#' + minBox);
+    this.secBox = document.querySelector('#' + secBox);
+}
+
+//タイマー開始メソッド
+Timer.prototype.startTimer = function() {
+    this.stopTimer()
+
+    var min = this.minBox.value;
+    var sec = this.secBox.value;
+
+    // if (min === "" && sec === "") {
+    //     alert(this.label.innerText + "に時間を設定してください！");
+    //     return;
+    // }
+
+    min = (min === "" ? 0 : parseInt(min, 10));
+    sec = (sec === "" ? 0 : parseInt(sec, 10));
+
+    //不正な数値の場合
+    // if (! isFinite(min) || ! isFinite(sec) ||
+    //     min < 0 || sec < 0 || (min === 0 && sec === 0))
+    // {
+    //     alert(this.label.innerText + "に正しい時間を設定してください！");
+    //     return;
+    // }
+
+    this.minBox.readonly = true;
+    this.secBox.readonly = true;
+
+    this.minBox.value = min;
+    this.secBox.value = sec;
+
+    this.countDown();
+};
+
+
+//カウントダウンする関数を1000ミリ秒毎に呼び出すメソッド
+Timer.prototype.countDown = function()
+{
+    //setIntervalのコールバック関数ではthisが変わるのでtimerで代用
+    var timer = this;
+
+    this.intervalID = setInterval(function() {
+        var min = parseInt(timer.minBox.value, 10);
+        var sec = parseInt(timer.secBox.value, 10);
+        var totalSec = min * 60 + sec - 1;
+
+        if (totalSec <= 0) {
+            timer.stopTimer();
+            totalSec = 0;
+            alert("時間です！");
+        }else{
+            //残り分数はintを60で割って切り捨てる
+            timer.minBox.value = Math.floor(totalSec / 60);
+            //残り秒数はintを60で割った余り
+            timer.secBox.value = totalSec % 60;
+        }
+        
+    }, 1000);
+};
+
+//タイマー停止メソッド
+Timer.prototype.stopTimer = function() {
+    if (this.intervalID !== null) {
+        clearInterval(this.intervalID);
+        this.intervalID = null;
+    }
+
+    this.minBox.readonly = false;
+    this.secBox.readonly = false;
+};
+
+//全タイマー開始関数
+function startTimers() {
+    for (var no in timerArray) {
+        timerArray[no].startTimer();
+    }
+}
+
+//全タイマー停止関数
+function stopTimers() {
+    for (var no in timerArray) {
+        timerArray[no].stopTimer();
+    }
+}
+</script>
+</body>
+</html>
