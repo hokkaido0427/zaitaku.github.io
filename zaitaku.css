@@ -1,0 +1,111 @@
+
+
+html, body {
+    width: 100vw;
+    height: 100vh;
+    padding: 0;
+    margin: 0;
+}
+
+/* メイン大文字 */
+.mainchar {
+    font-size: 8vmax;
+    font-weight: bold;
+    color: #2E2E2E;
+    line-height: 1;
+    text-align: center;
+    font-family: 'Helvetica Neue','Helvetica','Arial',sans-serif;
+}
+
+/* サブ文字 */
+.nomal {
+    font-size: 2vmax;
+    color: #2E2E2E;
+    text-align: center;
+    margin-bottom: 2.5em;
+    font-family: 'Helvetica Neue','Helvetica','Arial',sans-serif;
+}
+
+/* タイマー */
+.timeryade {
+    color: #2E2E2E;
+    text-align: center;
+    font-family: 'Helvetica Neue','Helvetica','Arial',sans-serif;
+}
+
+
+
+
+/* 4分割 */
+.grid-container {
+    display: grid;
+    grid-template-columns: 50% 50%;
+    grid-template-rows: 50% 50%;
+    gap: 1px 1px;
+    height: 100%;
+    position: relative;
+    background-size: cover;
+    background-attachment: fixed;
+    grid-template-areas: "Hydration ventilate" "break stand";
+}
+
+/*スクロールされないようにする*/
+body {
+    overflow: hidden;
+}
+
+/* 水分 */
+.Hydration { 
+    grid-area: Hydration;
+    background-color: #00b8a9;
+}
+
+/* 換気 */
+.ventilate {
+    grid-area: ventilate;
+    background-color: #f8f3d4;
+}
+
+/* 休憩 */
+.break {
+    grid-area: break;
+    background-color: #ffde7d;
+}
+
+/* 立つ */
+.stand {
+    grid-area: stand;
+    background-color: #f6416c;
+}
+
+
+/* ボタン */
+.buttonyade{
+    position:fixed;
+    top:44%;
+    left:44%
+}
+
+.btn-circle-3d {
+    display: inline-block;
+    text-decoration: none;
+    background: rgb(109, 109, 109);
+    color: #FFF;
+    width: 80px;
+    height: 80px;
+    line-height: 80px;
+    border-radius: 50%;
+    text-align: center;
+    font-weight: bold;
+    overflow: hidden;
+    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.29);
+    border-bottom: solid 3px #2E2E2E;
+    transition: .4s;
+  }
+  
+  .btn-circle-3d:active {
+    -webkit-transform: translateY(2px);
+    transform: translateY(2px);
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0.15);
+    border-bottom: none;
+  }
